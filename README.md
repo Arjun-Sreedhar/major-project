@@ -1,21 +1,156 @@
 # WanderInn – Full-Stack Travel Listing Platform
 
-WanderInn is a full-stack travel listing web application that allows users to explore, create, and review travel stays.  
-The platform supports user authentication, listing management, and a review system, built using a clean MVC architecture.
+A full-stack travel listing web application where users can explore, 
+create, manage and review travel stays. Built with MVC architecture 
+focusing on secure authentication, robust error handling and clean 
+backend design.
 
-##  Features
-- User authentication and authorization
-- Create, edit, and delete travel listings
-- Review and rating system
-- Server-side validation and error handling
-- Session-based login with cookies
-- Responsive UI using Bootstrap
-- Deployed on Render
+🔗 **Live Demo:** https://wanderinn-tu1m.onrender.com/listings
 
-##  Tech Stack
+---
 
-**Backend:** Node.js, Express.js, MongoDB, Mongoose  
-**Frontend:** EJS, Bootstrap  
-**Auth & Security:** Passport.js, express-session, cookie-parser, connect-flash  
-**Validation:** Joi  
-**Deployment:** Render, MongoDB Atlas
+## Screenshots
+
+![Listing Page](screenshots/home.png)
+![Single Listings Page](screenshots/listings.png)
+![Add New Listing Form Page](screenshots/new_listing.png)
+![Sign Up Page](screenshots/signup.png)
+---
+
+## Features
+
+### API & Database:
+-	14 RESTful API endpoints across 3 route modules — listings, reviews and users
+-	3 Mongoose schemas (User, Listing, Review) with ObjectId references modeling one-to-many relationships
+-	Cascade middleware deletes associated reviews when a listing is removed
+-	Cloud database hosted on MongoDB Atlas for persistent, production-ready storage
+
+### Authentication & Authorization:
+-	Session-based authentication using Passport.js with passport-local strategy
+-	express-session configured with httpOnly cookies and 7-day session expiry to prevent XSS and session hijacking
+-	6 custom middleware functions with clear separation of concerns — isLoggedIn (authentication), isOwner and isReviewAuthor (authorization), validateListing and validateReview (Joi-based input validation), and saveRedirectUrl (preserving intended destination before login redirect)
+
+### Validation & Error Handling:
+-	Joi validation middleware on all listing and review routes rejecting invalid or incomplete inputs server-side
+-	Custom ExpressError class with HTTP status codes for structured error responses
+-	wrapAsync utility eliminating repetitive try-catch blocks across all async routes
+-	Centralized error middleware as single source of truth for all error responses
+
+### Testing & Deployment:
+-	10+ automated test cases written using Jest and Supertest covering auth flows, CRUD operations and protected route access
+-	Manual testing via Postman and Hoppscotch across all 14 endpoints
+-	Deployed on Render with MongoDB Atlas, achieving 1.22s cold load on live environment
+-	Environment variables managed via dotenv, keeping credentials out of source code
+
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Backend | Node.js, Express.js |
+| Database | MongoDB Atlas, Mongoose |
+| Frontend | EJS, Bootstrap |
+| Authentication | Passport.js, express-session |
+| Validation | Joi |
+| Testing | Jest, Supertest |
+| Deployment | Render |
+
+---
+
+## Project Structure
+
+├── controllers/        # Business logic
+│   ├── listings.js
+│   ├── reviews.js
+│   └── users.js
+├── models/             # Mongoose schemas
+│   ├── listing.js
+│   ├── review.js
+│   └── user.js
+├── routes/             # Express route files
+│   ├── listings.js
+│   ├── reviews.js
+│   └── user.js
+├── views/              # EJS templates
+├── util/               # Utilities
+│   ├── ExpressError.js
+│   └── wrapAsync.js
+├── middleware.js        # Custom middleware
+└── app.js              # Entry point
+
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Node.js v18+
+- MongoDB Atlas account
+- Cloudinary account (for image uploads)
+
+### Installation
+
+```bash
+git clone https://github.com/Arjun-Sreedhar/major-project.git
+cd major-project
+npm install
+```
+
+### Environment Variables
+
+Create a `.env` file in the root directory:
+
+MONGO_URL=your_mongodb_atlas_connection_string
+SECRET=your_session_secret
+CLOUD_NAME=your_cloudinary_cloud_name
+CLOUD_API_KEY=your_cloudinary_api_key
+CLOUD_API_SECRET=your_cloudinary_api_secret
+
+### Run Locally
+
+```bash
+node app.js
+```
+
+Visit `http://localhost:8080`
+
+---
+
+## API Overview
+
+| Method | Route | Description | Auth Required |
+|---|---|---|---|
+| GET | /listings | Get all listings | No |
+| POST | /listings | Create new listing | Yes |
+| GET | /listings/:id | Get single listing | No |
+| PUT | /listings/:id | Update listing | Yes (Owner) |
+| DELETE | /listings/:id | Delete listing | Yes (Owner) |
+| POST | /listings/:id/reviews | Add review | Yes |
+| DELETE | /listings/:id/reviews/:rid | Delete review | Yes (Author) |
+| GET | /login | Login page | No |
+| POST | /login | Authenticate user | No |
+| GET | /signup | Signup page | No |
+| POST | /signup | Register user | No |
+| GET | /logout | Logout user | Yes |
+
+---
+
+## Key Technical Decisions
+
+- **Passport.js over JWT** — Session-based auth is stateful 
+  and better suited for server-rendered EJS applications
+- **MongoDB Atlas** — Cloud-hosted database for persistent 
+  production storage
+- **wrapAsync utility** — Eliminates repetitive try-catch 
+  blocks across all async route handlers
+- **Joi validation** — Schema-based server-side validation 
+  prevents invalid data from reaching the database
+
+---
+
+## Author
+
+**Arjun Sreedhar**  
+[GitHub](https://github.com/Arjun-Sreedhar)
