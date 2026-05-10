@@ -59,36 +59,12 @@ backend design.
 
 ---
 
-## Project Structure
-
-├── controllers/        # Business logic
-│   ├── listings.js
-│   ├── reviews.js
-│   └── users.js
-├── models/             # Mongoose schemas
-│   ├── listing.js
-│   ├── review.js
-│   └── user.js
-├── routes/             # Express route files
-│   ├── listings.js
-│   ├── reviews.js
-│   └── user.js
-├── views/              # EJS templates
-├── util/               # Utilities
-│   ├── ExpressError.js
-│   └── wrapAsync.js
-├── middleware.js        # Custom middleware
-└── app.js              # Entry point
-
-
----
 
 ## Getting Started
 
 ### Prerequisites
 - Node.js v18+
 - MongoDB Atlas account
-- Cloudinary account (for image uploads)
 
 ### Installation
 
@@ -98,15 +74,6 @@ cd major-project
 npm install
 ```
 
-### Environment Variables
-
-Create a `.env` file in the root directory:
-
-MONGO_URL=your_mongodb_atlas_connection_string
-SECRET=your_session_secret
-CLOUD_NAME=your_cloudinary_cloud_name
-CLOUD_API_KEY=your_cloudinary_api_key
-CLOUD_API_SECRET=your_cloudinary_api_secret
 
 ### Run Locally
 
